@@ -2,6 +2,7 @@ package cuentas;
 
 import excepciones.CuentaInhabilitadaException;
 import excepciones.SaldoInsuficienteException;
+import excepciones.TransferenciaException;
 
 public class CuentaCorriente extends Cuenta {
     private double saldoDescubierto;
@@ -36,13 +37,13 @@ public class CuentaCorriente extends Cuenta {
     }
 
     @Override
-    public void transferirSaldoA(CuentaCorriente cuentaDestino, double montoATransferir) {
+    public void transferirSaldoA(CuentaCorriente cuentaDestino, double montoATransferir) throws SaldoInsuficienteException, TransferenciaException {
         super.transferirSinCobrarComision(montoATransferir, cuentaDestino);
     }
 
     @Override
-    public void transferirSaldoA(CajaDeAhorro cuentaDestino, double montoATransferir) {
-        if (this.mismoTitular(cuentaDestino))
+    public void transferirSaldoA(CajaDeAhorro cuentaDestino, double montoATransferir) throws SaldoInsuficienteException, TransferenciaException {
+        if (cuentaDestino.mismoTitular(this))
             super.transferirSinCobrarComision(montoATransferir, cuentaDestino);
         else
             super.transferirCobrandoComision(montoATransferir, cuentaDestino);
