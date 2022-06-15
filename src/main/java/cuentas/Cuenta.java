@@ -19,6 +19,10 @@ public abstract class Cuenta {
         this.cuentaHabilitada = cuentaHabilitada;
     }
 
+    public abstract void transferirSaldoA(CajaDeAhorro cuentaDestino, double montoATransferir);
+
+    public abstract void transferirSaldoA(CuentaCorriente cuentaDestino, double montoATransferir);
+
     protected boolean mismoTitular(Cuenta otraCuenta) {
         return this.getTitular().equals(otraCuenta.getTitular());
     }
@@ -54,10 +58,6 @@ public abstract class Cuenta {
         double comision = montoARetirar * this.comisionPorTransferencia();
         this.retirarSinCobrarComision(montoARetirar + comision);
     }
-
-    public abstract void transferirSaldoA(CajaDeAhorro cuentaDestino, double montoATransferir);
-
-    public abstract void transferirSaldoA(CuentaCorriente cuentaDestino, double montoATransferir);
 
     protected void transferirSinCobrarComision(double montoATransferir, Cuenta cuentaDestino) throws SaldoInsuficienteException {
         this.retirarSinCobrarComision(montoATransferir);

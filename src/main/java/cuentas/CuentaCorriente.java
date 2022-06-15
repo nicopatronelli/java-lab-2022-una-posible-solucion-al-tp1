@@ -42,7 +42,7 @@ public class CuentaCorriente extends Cuenta {
 
     @Override
     public void transferirSaldoA(CajaDeAhorro cuentaDestino, double montoATransferir) {
-        if (this.mismoTitular(cuentaDestino))
+        if (cuentaDestino.mismoTitular(this))
             super.transferirSinCobrarComision(montoATransferir, cuentaDestino);
         else
             super.transferirCobrandoComision(montoATransferir, cuentaDestino);
