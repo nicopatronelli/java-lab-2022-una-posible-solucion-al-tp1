@@ -2,6 +2,9 @@ package transferencias.cases;
 
 import cuentas.CajaDeAhorro;
 import cuentas.CuentaCorriente;
+import excepciones.CuentaInhabilitadaException;
+import excepciones.MontoADepositarInvalidoException;
+import excepciones.SaldoInsuficienteException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,7 +29,7 @@ public class TransferenciasCasosCorrectosTests {
 
     @Test
     @DisplayName("No se cobra comisión en una transferencia entre cajas de ahorro de diferentes titulares")
-    void transferencia_entre_cajas_de_ahorro_de_diferentes_titulares() {
+    void transferencia_entre_cajas_de_ahorro_de_diferentes_titulares() throws CuentaInhabilitadaException, MontoADepositarInvalidoException, SaldoInsuficienteException {
         cuentaOrigen(cajaDeAhorroDeMisty).transferirSaldoA(cuentaDestino(cajaDeAhorroDeAsh), 200);
 
         assertEquals(1000, cajaDeAhorroDeMisty.getSaldo());
@@ -35,7 +38,7 @@ public class TransferenciasCasosCorrectosTests {
 
     @Test
     @DisplayName("No se cobra comisión en una transferencia entre cuentas corrientes de diferentes titulares")
-    void transferencia_entre_cuentas_corrientes_de_diferentes_titulares() {
+    void transferencia_entre_cuentas_corrientes_de_diferentes_titulares() throws CuentaInhabilitadaException, MontoADepositarInvalidoException, SaldoInsuficienteException {
         cuentaOrigen(cuentaCorrienteDeGary).transferirSaldoA(cuentaDestino(cuentaCorrienteDeAsh), 450);
 
         assertEquals(1050, cuentaCorrienteDeGary.getSaldo()); // 1000 + 500 (descubierto) - 450 = 1050
@@ -44,7 +47,7 @@ public class TransferenciasCasosCorrectosTests {
 
     @Test
     @DisplayName("No se cobra comisión en una transferencia de una caja de ahorro a una cuenta corriente pertenecientes al mismo titular")
-    void transferencia_mismo_titular_de_caja_de_ahorro_a_cuenta_corriente() {
+    void transferencia_mismo_titular_de_caja_de_ahorro_a_cuenta_corriente() throws CuentaInhabilitadaException, MontoADepositarInvalidoException, SaldoInsuficienteException {
         cuentaOrigen(cajaDeAhorroDeAsh).transferirSaldoA(cuentaDestino(cuentaCorrienteDeAsh), 500);
 
         assertEquals(1000, cajaDeAhorroDeAsh.getSaldo()); // 1500 - 500
@@ -53,7 +56,7 @@ public class TransferenciasCasosCorrectosTests {
 
     @Test
     @DisplayName("No se cobra comisión en una transferencia de una cuenta corriente a una caja de ahorro pertenecientes al mismo titular")
-    void transferencia_mismo_titular_de_cuenta_corriente_a_caja_de_ahorro() {
+    void transferencia_mismo_titular_de_cuenta_corriente_a_caja_de_ahorro() throws CuentaInhabilitadaException, MontoADepositarInvalidoException, SaldoInsuficienteException {
         cuentaOrigen(cuentaCorrienteDeAsh).transferirSaldoA(cuentaDestino(cajaDeAhorroDeAsh), 500);
 
         assertEquals(800, cuentaCorrienteDeAsh.getSaldo()); // 800 + 500 (descubierto) - 500 = 800
@@ -62,7 +65,7 @@ public class TransferenciasCasosCorrectosTests {
 
     @Test
     @DisplayName("En una transferencia entre distintos titulares y tipo de cuenta, se cobra 1,5% de comision si la cuenta origen es caja de ahorro")
-    void transferencia_entre_distintos_titulares_con_cuenta_origen_caja_de_ahorro_y_cuenta_destino_cuenta_corriente() {
+    void transferencia_entre_distintos_titulares_con_cuenta_origen_caja_de_ahorro_y_cuenta_destino_cuenta_corriente() throws CuentaInhabilitadaException, MontoADepositarInvalidoException, SaldoInsuficienteException {
         cuentaOrigen(cajaDeAhorroDeAsh).transferirSaldoA(cuentaDestino(cuentaCorrienteDeGary), 500);
 
         assertEquals(992.5, cajaDeAhorroDeAsh.getSaldo()); // 1500 - 500 - 500*0,015 = 1500 - 500 - 7,5 = 1500 - 507,5 = 992,5
@@ -71,7 +74,7 @@ public class TransferenciasCasosCorrectosTests {
 
     @Test
     @DisplayName("En una transferencia entre distintos titulares y tipo de cuenta, se cobra 3% de comision si la cuenta origen es cuenta corriente")
-    void transferencia_entre_distintos_titulares_con_cuenta_origen_caja_de_corriente_y_cuenta_destino_caja_de_ahorro() {
+    void transferencia_entre_distintos_titulares_con_cuenta_origen_caja_de_corriente_y_cuenta_destino_caja_de_ahorro() throws CuentaInhabilitadaException, MontoADepositarInvalidoException, SaldoInsuficienteException {
         cuentaOrigen(cuentaCorrienteDeAsh).transferirSaldoA(cuentaDestino(cajaDeAhorroDeMisty), 500);
 
         assertEquals(785, cuentaCorrienteDeAsh.getSaldo()); // 800 + 500 (descubierto) - 500 - 500*0,03 = 800 - 15 = 785

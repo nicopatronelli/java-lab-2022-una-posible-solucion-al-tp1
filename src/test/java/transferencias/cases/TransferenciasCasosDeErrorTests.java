@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static transferencias.util.TransferenciasTestsFluent.cuentaDestino;
+import static transferencias.util.TransferenciasTestsFluent.cuentaOrigen;
 
 public class TransferenciasCasosDeErrorTests {
     private CajaDeAhorro cajaDeAhorroDeAsh;
@@ -36,6 +37,16 @@ public class TransferenciasCasosDeErrorTests {
     void se_lanza_excepcion_en_una_transferencia_si_la_cuenta_origen_es_una_caja_de_ahorro_inhabilitada() {
         assertThrows(CuentaInhabilitadaException.class,
                 () -> cajaDeAhorroInhabilitada.transferirSaldoA(cajaDeAhorroDeAsh, 200));
+    }
+
+    @Test
+    @DisplayName("Se lanza la excepcion CuentaInhabilitadaException en una transferencia si la cuenta destino es una caja de ahorro y está inhabilitada")
+    void se_lanza_excepcion_en_una_transferencia_si_la_cuenta_destino_es_una_caja_de_ahorro_inhabilitada() {
+        assertThrows(CuentaInhabilitadaException.class,
+                () -> cuentaOrigen(cajaDeAhorroDeAsh).transferirSaldoA(cuentaDestino(cajaDeAhorroInhabilitada), 200));
+
+//        assertEquals(1500, cajaDeAhorroDeAsh.getSaldo());
+//        assertEquals(1000, cajaDeAhorroInhabilitada.getSaldo());
     }
 
     @Test

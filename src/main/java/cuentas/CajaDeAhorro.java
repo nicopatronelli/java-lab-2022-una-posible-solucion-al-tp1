@@ -1,5 +1,9 @@
 package cuentas;
 
+import excepciones.CuentaInhabilitadaException;
+import excepciones.MontoADepositarInvalidoException;
+import excepciones.SaldoInsuficienteException;
+
 public class CajaDeAhorro extends Cuenta {
     public CajaDeAhorro(double saldo, String nroCuenta, String titular, boolean cuentaHabilitada) {
         super(saldo, nroCuenta, titular, cuentaHabilitada);
@@ -11,15 +15,15 @@ public class CajaDeAhorro extends Cuenta {
     }
 
     @Override
-    public void transferirSaldoA(CajaDeAhorro cuentaDestino, double montoATransferir) {
-        super.transferirSinCobrarComision(montoATransferir, cuentaDestino);
+    public void transferirSaldoA(CajaDeAhorro cuentaDestino, double montoATransferir) throws CuentaInhabilitadaException, SaldoInsuficienteException, MontoADepositarInvalidoException {
+        super.transferirSinCobrarComision(cuentaDestino, montoATransferir);
     }
 
     @Override
-    public void transferirSaldoA(CuentaCorriente cuentaDestino, double montoATransferir) {
+    public void transferirSaldoA(CuentaCorriente cuentaDestino, double montoATransferir) throws CuentaInhabilitadaException, SaldoInsuficienteException, MontoADepositarInvalidoException {
         if (cuentaDestino.mismoTitular(this))
-            super.transferirSinCobrarComision(montoATransferir, cuentaDestino);
+            super.transferirSinCobrarComision(cuentaDestino, montoATransferir);
         else
-            super.transferirCobrandoComision(montoATransferir, cuentaDestino);
+            super.transferirCobrandoComision(cuentaDestino, montoATransferir);
     }
 }

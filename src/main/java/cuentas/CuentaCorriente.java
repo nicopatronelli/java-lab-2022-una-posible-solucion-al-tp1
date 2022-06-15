@@ -1,6 +1,7 @@
 package cuentas;
 
 import excepciones.CuentaInhabilitadaException;
+import excepciones.MontoADepositarInvalidoException;
 import excepciones.SaldoInsuficienteException;
 
 public class CuentaCorriente extends Cuenta {
@@ -17,7 +18,7 @@ public class CuentaCorriente extends Cuenta {
     }
 
     @Override
-    protected void retirar(double montoARetirar) throws SaldoInsuficienteException, CuentaInhabilitadaException {
+    protected void retirar(double montoARetirar) {
 //      En este punto se que la CC tiene saldo suficiente total para el retiro
         if (this.saldo >= montoARetirar)
             super.retirar(montoARetirar);
@@ -36,15 +37,15 @@ public class CuentaCorriente extends Cuenta {
     }
 
     @Override
-    public void transferirSaldoA(CuentaCorriente cuentaDestino, double montoATransferir) {
-        super.transferirSinCobrarComision(montoATransferir, cuentaDestino);
+    public void transferirSaldoA(CuentaCorriente cuentaDestino, double montoATransferir) throws CuentaInhabilitadaException, SaldoInsuficienteException, MontoADepositarInvalidoException {
+        super.transferirSinCobrarComision(cuentaDestino, montoATransferir);
     }
 
     @Override
-    public void transferirSaldoA(CajaDeAhorro cuentaDestino, double montoATransferir) {
+    public void transferirSaldoA(CajaDeAhorro cuentaDestino, double montoATransferir) throws CuentaInhabilitadaException, SaldoInsuficienteException, MontoADepositarInvalidoException{
         if (cuentaDestino.mismoTitular(this))
-            super.transferirSinCobrarComision(montoATransferir, cuentaDestino);
+            super.transferirSinCobrarComision(cuentaDestino, montoATransferir);
         else
-            super.transferirCobrandoComision(montoATransferir, cuentaDestino);
+            super.transferirCobrandoComision(cuentaDestino, montoATransferir);
     }
 }
